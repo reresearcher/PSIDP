@@ -49,5 +49,4 @@ The 400-dim labels of large-scale Flickr-1M (1,000,000 images) dataset are also 
   Baidu Cloud: https://pan.baidu.com/s/1-2AJG_3tPv5WKig7GwtkmQ 
   password: 258w 
 
-   If you have any questions, please feel free to contact me yufengshi17@hust.edu.cn
-
+## If you have any questions, please feel free to contact me yufengshi17@hust.edu.cn
