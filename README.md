@@ -33,8 +33,8 @@ loguru 0.5.3
 
 1. Download the Flickr-25k dataset:
 
-  Baidu Cloud: https://pan.baidu.com/s/1gv7PkawQitYoUogndUEPXg 
-  password: a91q 
+    Baidu Cloud: https://pan.baidu.com/s/1gv7PkawQitYoUogndUEPXg 
+    password: a91q 
 
 2. Put the flickr25k.zip in the ./Datasets and unzip it.
 
