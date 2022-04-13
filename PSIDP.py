@@ -64,16 +64,7 @@ def train(
     I_buffer = torch.FloatTensor(I_numpy).to(device)
     attributes_buffer = torch.FloatTensor(attributes).to(device)
     
-    F_loss = torch.randn(num_train, code_length).to('cpu')
-    S_loss = torch.FloatTensor(S_numpy).to('cpu')
-    I_loss = torch.FloatTensor(I_numpy).to('cpu')
-    F_pre_loss = torch.randn(num_train, code_length).to('cpu')
-    A_pre_loss = torch.randn(num_train, attribute_dim).to('cpu')
-    A_loss = torch.FloatTensor(attributes).to('cpu')
-    
-    
-    suan_loss = whole_loss(F_loss, S_loss, I_loss, F_pre_loss, A_pre_loss, A_loss, code_length, gamma)
-    logger.debug('[epoch:{}][loss:{:.4f}]'.format(0, suan_loss.item()))
+
     I = Variable(I_buffer)
     S = Variable(S_buffer)
     bestMAP = -1.0
@@ -88,13 +79,6 @@ def train(
             attribute = attributes_buffer[index, :]
 
             cur_f, cur_att, cur_code = model(data)
-            
-            index_loss = index
-            index_loss = index_loss.to('cpu')
-            F_loss[index_loss, :] = cur_f.data.to('cpu')
-            F_pre_loss[index_loss, :] = cur_code.data.to('cpu')
-            A_pre_loss[index_loss, :] = cur_att.data.to('cpu')
-            
             
             v = cur_f
             H = v @ v.t() / code_length
@@ -114,11 +98,7 @@ def train(
             loss.backward()
             optimizer.step()
             
-            #logger.debug('[epoch:{}][Batch:{}/{}][loss:{:.4f}]'.format(epoch+1, i+1, n_batch, loss.item()))
-
-        suan_loss = whole_loss(F_loss, S_loss, I_loss, F_pre_loss, A_pre_loss, A_loss, code_length, gamma)
-        logger.debug('[epoch:{}][loss:{:.4f}]'.format(epoch, suan_loss.item()))
-
+            logger.debug('[epoch:{}][Batch:{}/{}][loss:{:.4f}]'.format(epoch+1, i+1, n_batch, loss.item()))
 
         if epoch % evaluate_interval == 0:
             query_code, retrieval_code, onehot_query_targets, onehot_retrieval_targets, mAP = evaluate(model,
@@ -156,45 +136,6 @@ def train(
             checkpoint_name = arch + '_' + dataset + '_' + str(code_length) + '_' + str(max_iter)
             model.snapshot(epoch)
             logger.info('[epoch:{}][Snapshot]'.format(epoch))
-
-
-
-
-    #model.snapshot(checkpoint_name)
-    ## Evaluate and save snapshot
-    #query_code, retrieval_code, onehot_query_targets, onehot_retrieval_targets, mAP = evaluate(model,
-    #               query_dataloader,
-    #               retrieval_dataloader,
-    #               code_length,
-    #               label_dim,
-    #               device,
-    #               topk,
-    #               )
-
-
-    #logger.info('Training finish, [Dataset:{}][Bit:{}][map:{:.4f}][Snapshot]'.format(
-    #    dataset, str(code_length), mAP))
-
-    #query_code = query_code.numpy().astype(np.int)
-    #retrieval_code = retrieval_code.numpy().astype(np.int)
-    #onehot_query_targets = onehot_query_targets.cpu().numpy().astype(np.int)
-    #onehot_retrieval_targets = onehot_retrieval_targets.cpu().numpy().astype(np.int)
-    #mat_name = arch + '_' + dataset + '_' + str(code_length) + '_finall'
-    #sio.savemat(mat_name + '.mat', {'Qi': query_code,
-    #                                'Di': retrieval_code,
-    #                                'query_L': onehot_query_targets,
-    #                                'retrieval_L': onehot_retrieval_targets})
-
-def whole_loss(F, S, I, F_pre, A_pre, A, code_length, gamma):
-    
-    sim_loss = (S.abs() * (F@F.t() / code_length - S).pow(2)).sum()
-
-    tmp = torch.unsqueeze(torch.sum(I, dim=1), 0)
-    code_loss = torch.sum(torch.mm(tmp, (torch.pow(F_pre - F, 2))))
-    att_loss = torch.sum(torch.mm(tmp, (torch.pow(A_pre - A, 2))))    
-    att_loss = (code_loss+att_loss)
-    loss = sim_loss + gamma*att_loss
-    return loss
 
 def evaluate(model, query_dataloader, retrieval_dataloader, code_length, label_dim, device, topk):
 
