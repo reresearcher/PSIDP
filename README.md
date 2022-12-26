@@ -2,8 +2,6 @@
 
 # --Neurocomputing@2022
 
-## Result
-
 ## Environment:
 
 Archlinux 5.14.12-arch1-1
@@ -48,5 +46,18 @@ The 400-dim labels of large-scale Flickr-1M (1,000,000 images) dataset are also 
 
   Baidu Cloud: https://pan.baidu.com/s/1-2AJG_3tPv5WKig7GwtkmQ 
   password: 258w 
+
+## If you find PSIDP useful, please cite:
+```
+@article{shi2022psidp,
+  title={PSIDP: Unsupervised deep hashing with pretrained semantic information distillation and preservation},
+  author={Shi, Yufeng and You, Xinge and Zhao, Yue and Xu, Jiamiao and Ou, Weihua and Zheng, Feng and Peng, Qinmu},
+  journal={Neurocomputing},
+  volume={502},
+  pages={1--14},
+  year={2022},
+  publisher={Elsevier}
+}
+```
 
 ## If you have any questions, please feel free to contact me yufengshi17@hust.edu.cn
