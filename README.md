@@ -1,6 +1,6 @@
 # PSIDP:Unsupervised Deep Hashing with Pretrained Semantic Information Distillation and Preservation
 
-# --Submitted to Neurocomputing
+# --Neurocomputing@2022
 
 ## Result
 
