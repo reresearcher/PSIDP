@@ -60,4 +60,4 @@ The 400-dim labels of large-scale Flickr-1M (1,000,000 images) dataset are also 
 }
 ```
 
-## If you have any questions, please feel free to contact me yufengshi17@hust.edu.cn
+## If you have any questions, please feel free to contact me yufengshi23@163.com
